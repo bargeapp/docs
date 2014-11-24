@@ -80,6 +80,11 @@ html, body {
   font-size: 13px;
   font-weight: bold;
 
+  .logo {
+    background-color: white;
+    text-align: center;
+  }
+  
   // language selector for mobile devices
   .lang-selector {
     display: none;
