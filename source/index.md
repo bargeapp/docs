@@ -4,6 +4,7 @@ title: Barge Documentation
 language_tabs:
   - javascript
   - coffeescript
+  - ruby
 toc_footers:
 
 includes:
