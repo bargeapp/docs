@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["javascript","coffeescript"]);
+          setupLanguages(["javascript","coffeescript","ruby"]);
         });
       </script>
   </head>
@@ -34,6 +34,7 @@
         <div class="lang-selector">
               <a href="#" data-language-name="javascript">javascript</a>
               <a href="#" data-language-name="coffeescript">coffeescript</a>
+              <a href="#" data-language-name="ruby">ruby</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -46,23 +47,66 @@
       <div class="dark-box"></div>
       <div class="content">
         
-          <h1 id='introduction'>Introduction</h1><h2 id='what-is-barge'>What is Barge?</h2>
-<p>Barge is the only platform that uses existing functional tests to load test your application.</p>
-<h2 id='supported-frameworks'>Supported Frameworks</h2>
-<p>At the moment Barge supports PhantomJS and CasperJS written in JavaScript or CoffeeScript. If you&rsquo;d like to see Barge support another framework please let us know by emailing us at <a href="mailto:hello@bargeapp.com">hello@bargeapp.com</a>.</p>
-<h2 id='pricing'>Pricing</h2>
-<p>We plan to charge per operation but are allowing a limited number of users run a limited number of tests for free during our beta.</p>
+          <h1 id="introduction">Introduction</h1>
 
-          <h1 id='terminology'>Terminology</h1><h2 id='suite'>Suite</h2>
+<h2 id="what-is-barge?">What is Barge?</h2>
+
+<p>Barge is the only platform that uses existing functional tests to load test your application.</p>
+
+<h2 id="types-of-tests">Types of Tests</h2>
+
+<p>Barge supports Selenium tests written in any language as well as tests written using certain Javascript frameworks.</p>
+
+          <h1 id="terminology">Terminology</h1>
+
+<h2 id="suite">Suite</h2>
+
 <p>A suite is simply a group of scripts. Typically suites are used to group scripts that test similar parts of the application (e.g. sign up, shopping cart, etc.).</p>
-<h2 id='suite-test'>Suite Test</h2>
+
+<h2 id="suite-test">Suite Test</h2>
+
 <p>A group of tests including all scripts within a single script.</p>
-<h2 id='resource'>Resource</h2>
+
+<h2 id="resource">Resource</h2>
+
 <p>A resource is a single URL that a browser requests. A single HTML page may include dozens of resources like images and css files as well as javascript files which may themselves cause asynchronous requests to be performed thereby requestiong more resources.</p>
 
-          <h1 id='enabling-barge'>Enabling Barge</h1>
-<p>After signing up and enabling a repository you&rsquo;ll need to add the <code class="prettyprint">@barge</code> comment to your scripts. This is just a comment at the top of your scripts that starts with <code class="prettyprint">@barge</code> and takes optional parameters (below).</p>
-<h2 id='barge-parameters'>@barge parameters</h2>
+          <h1 id="api">API</h1>
+
+<p>Barge provides a RESTful, JSON-based API for running tests and retrieving results.</p>
+
+<h2 id="authentication">Authentication</h2>
+
+<p>Just append your API key to an HTTP header named <code class="prettyprint">API_KEY</code> or a query string parameter named <code class="prettyprint">api_key</code>. Note: for the examples we&rsquo;ll be using the HTTP header method.</p>
+<pre><code class="highlight shell">curl https://www.bargeapp.com/api/suites/1?api_key<span class="o">=</span>123456789abcdef
+<span class="c"># OR</span>
+curl -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/suites/1
+</code></pre>
+
+<aside class="notice">
+Don&rsquo;t forget to replace `123456789abcdef` with your API key (available in the Account page)
+</aside>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<p>See the <a href="#javascript-tests">Javascript Tests</a> and <a href="#selenium-tests">Selenium Tests</a> pages for specific endpoints</p>
+
+          <h1 id="javascript-tests">Javascript Tests</h1>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Javascript tests are supported by integrating with Github. The easiest way to integrate is just to sign up using your Github account. You can also sign up with your email address but you&rsquo;ll need to run some extra steps to get things working (instructions will appear on the project page).</p>
+
+<h2 id="supported-frameworks">Supported Frameworks</h2>
+
+<p>At the moment Barge supports PhantomJS and CasperJS written in JavaScript or CoffeeScript. If you&rsquo;d like to see Barge support another framework please let us know by emailing us at <a href="mailto:hello@bargeapp.com">hello@bargeapp.com</a>.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>After enabling repository you&rsquo;ll need to add the <code class="prettyprint">@barge</code> comment to your scripts. This is just a comment at the top of your scripts that starts with <code class="prettyprint">@barge</code> and takes optional parameters (below).</p>
+
+<h2 id="@barge-parameters">@barge parameters</h2>
+
 <p>Though none of the parameters are <em>technically</em> required we <em>highly</em> explicitly recommend setting the <code class="prettyprint">suite</code> and <code class="prettyprint">framework</code>.</p>
 
 <table><thead>
@@ -89,19 +133,8 @@
 <pre><code class="highlight coffeescript"><span class="c1"># @barge suite="User Signup" framework="casperjs" args="--ssl-protocol=any"
 </span></code></pre>
 
-          <h1 id='api'>API</h1>
-<p>Barge provides a RESTful, JSON-based API for running tests and retrieving results.</p>
-<h2 id='authentication'>Authentication</h2>
-<p>Just append your API key to an HTTP header named <code class="prettyprint">API_KEY</code> or a query string parameter named <code class="prettyprint">api_key</code>. Note: for the examples we&rsquo;ll be using the HTTP header method.</p>
-<pre><code class="highlight shell">curl https://www.bargeapp.com/api/suites/1?api_key<span class="o">=</span>123456789abcdef
-<span class="c"># OR</span>
-curl -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/suites/1
-</code></pre>
+<h2 id="start-a-suite-test">Start a suite test</h2>
 
-<p><aside class="notice">
-Don&rsquo;t forget to replace <code class="prettyprint">123456789abcdef</code> with your API key (available in the Account page)
-</aside></p>
-<h2 id='start-a-suite-test'>Start a suite test</h2>
 <p>POST the following parameters to <code class="prettyprint">/api/suites</code></p>
 <pre><code class="highlight shell"><span class="c"># you'll need to change the api_key, project, and name parameters below</span>
 curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> -d <span class="s1">'{"project": "/torvalds/linux","name": "Users"}'</span> https://www.bargeapp.com/api/suites
@@ -130,7 +163,9 @@ curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <spa
 </tbody></table>
 <pre><code class="highlight json"><span class="p">{</span><span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">"baseline_multiple"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">"baseline"</span><span class="p">:</span><span class="mi">100</span><span class="p">}</span><span class="w">
 </span></code></pre>
-<h2 id='retrieving-suite-test'>Retrieving suite test</h2>
+
+<h3 id="retrieving-suite-test">Retrieving suite test</h3>
+
 <p>After starting a suite test you can check on the status of the test by executing a GET against <code class="prettyprint">/api/suites/:id</code></p>
 <pre><code class="highlight shell"><span class="c"># you'll need to change the api key and suite id</span>
 curl -X GET -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/suites/1
@@ -155,7 +190,9 @@ curl -X GET -H <span class="s1">'Content-Type: application/json'</span> -H <span
 </tbody></table>
 <pre><code class="highlight json"><span class="p">{</span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finished"</span><span class="p">,</span><span class="w"> </span><span class="s2">"tests"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}]}</span><span class="w">
 </span></code></pre>
-<h2 id='retrieving-test-results'>Retrieving test results</h2>
+
+<h2 id="retrieving-test-results">Retrieving test results</h2>
+
 <p>After a suite test has finished you can retrieve the test results for each test by executing a GET against <code class="prettyprint">/api/tests/:id</code></p>
 <pre><code class="highlight shell"><span class="c"># you'll need to change the api_key and test id</span>
 curl -X GET -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/tests/1
@@ -181,11 +218,86 @@ curl -X GET -H <span class="s1">'Content-Type: application/json'</span> -H <span
 <pre><code class="highlight json"><span class="p">{</span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finished"</span><span class="p">,</span><span class="w"> </span><span class="s2">"resource_events"</span><span class="p">:[{</span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.bargeapp.com"</span><span class="p">,</span><span class="w"> </span><span class="s2">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-11-10T01:22:28.810"</span><span class="p">,</span><span class="w"> </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">"successes"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">}]}</span><span class="w">
 </span></code></pre>
 
+          <h1 id="selenium-tests">Selenium Tests</h1>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Selenium tests enable you to run your <em>existing</em> selenium tests at scale with minimal code changes. You can easily configure your CI tool to run regular Selenium tests on every check-in and Barge tests nightly.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>Selenium tests are meant to be run via the API. You can think of the steps involved as similar to the Arrange Act Assert pattern of unit testing:</p>
+
+<p>There are 3 steps to running a Selenium test on Barge:</p>
+
+<ol>
+<li>Tell Barge to start a Webdriver session (api call)</li>
+<li>Run your test with the Selenium Remote WebDriver using the server information returned from the previous API call</li>
+<li>Tell Barge to start a test (api call)</li>
+</ol>
+
+<h2 id="starting-a-session">Starting a session</h2>
+<pre><code class="highlight shell"><span class="c"># you'll need to change the api_key below</span>
+curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/webdriver_sessions
+</code></pre>
+
+<p>POST to <code class="prettyprint">/api/webdriver_sessions</code></p>
+
+<p>This will return JSON with the following properties:</p>
+
+<table><thead>
+<tr>
+<th>name</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>the id of the session</td>
+</tr>
+<tr>
+<td>status</td>
+<td>the status of the session</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>the ip address of the server</td>
+</tr>
+<tr>
+<td>port</td>
+<td>the port of the server</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>timestamp</td>
+</tr>
+</tbody></table>
+
+<h2 id="running-the-test-(locally)">Running the Test (locally)</h2>
+<pre><code class="highlight ruby"><span class="n">driver</span> <span class="o">=</span> <span class="no">Selenium</span><span class="o">::</span><span class="no">WebDriver</span><span class="p">.</span><span class="nf">for</span><span class="p">(</span><span class="ss">:remote</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="s2">"http://</span><span class="si">#{</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">port</span><span class="si">}</span><span class="s2">/"</span><span class="p">)</span>
+</code></pre>
+<pre><code class="highlight javascript"><span class="c1">// using webdriver.io</span>
+<span class="nx">client</span> <span class="o">=</span> <span class="nx">webdriverio</span><span class="p">.</span><span class="nx">remote</span><span class="p">({</span><span class="na">host</span><span class="p">:</span> <span class="nx">ip</span><span class="p">,</span> <span class="na">port</span><span class="p">:</span> <span class="nx">port</span> <span class="p">}.</span><span class="nx">init</span><span class="p">();</span>
+</code></pre>
+<pre><code class="highlight coffeescript"><span class="c1"># using webdriver.io
+</span><span class="nx">client</span> <span class="o">=</span> <span class="nx">webdriverio</span><span class="p">.</span><span class="na">remote</span><span class="p">({</span><span class="na">host</span><span class="o">:</span> <span class="nx">ip</span><span class="p">,</span> <span class="na">port</span><span class="o">:</span> <span class="nx">port</span> <span class="p">}.</span><span class="na">init</span><span class="p">()</span>
+</code></pre>
+
+<p>After you&rsquo;ve started a session (above) you&rsquo;ll run your script locally using the Remote Webdriver.</p>
+
+<h2 id="running-the-barge-test">Running the Barge test</h2>
+
+<p>After the local script has finished running you&rsquo;re ready to run a Barge test.</p>
+<pre><code class="highlight shell"><span class="c"># you'll need to change the api_key below</span>
+curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> -d <span class="s1">'{"webdriver_session_id": 101, "users": 100, "minutes": 10}'</span> https://www.bargeapp.com/api/tests/create_webdriver
+</code></pre>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="javascript">javascript</a>
                 <a href="#" data-language-name="coffeescript">coffeescript</a>
+                <a href="#" data-language-name="ruby">ruby</a>
           </div>
       </div>
     </div>
