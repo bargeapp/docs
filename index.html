@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["javascript","coffeescript","ruby"]);
+          setupLanguages(["http"]);
         });
       </script>
   </head>
@@ -32,9 +32,7 @@
         </a>
       </div>
         <div class="lang-selector">
-              <a href="#" data-language-name="javascript">javascript</a>
-              <a href="#" data-language-name="coffeescript">coffeescript</a>
-              <a href="#" data-language-name="ruby">ruby</a>
+              <a href="#" data-language-name="http">http</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -71,26 +69,6 @@
 
 <p>A resource is a single URL that a browser requests. A single HTML page may include dozens of resources like images and css files as well as javascript files which may themselves cause asynchronous requests to be performed thereby requestiong more resources.</p>
 
-          <h1 id="api">API</h1>
-
-<p>Barge provides a RESTful, JSON-based API for running tests and retrieving results.</p>
-
-<h2 id="authentication">Authentication</h2>
-
-<p>Just append your API key to an HTTP header named <code class="prettyprint">API_KEY</code> or a query string parameter named <code class="prettyprint">api_key</code>. Note: for the examples we&rsquo;ll be using the HTTP header method.</p>
-<pre><code class="highlight shell">curl https://www.bargeapp.com/api/suites/1?api_key<span class="o">=</span>123456789abcdef
-<span class="c"># OR</span>
-curl -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/suites/1
-</code></pre>
-
-<aside class="notice">
-Don&rsquo;t forget to replace `123456789abcdef` with your API key (available in the Account page)
-</aside>
-
-<h2 id="endpoints">Endpoints</h2>
-
-<p>See the <a href="#javascript-tests">Javascript Tests</a> and <a href="#selenium-tests">Selenium Tests</a> pages for specific endpoints</p>
-
           <h1 id="javascript-tests">Javascript Tests</h1>
 
 <h2 id="introduction">Introduction</h2>
@@ -107,7 +85,7 @@ Don&rsquo;t forget to replace `123456789abcdef` with your API key (available in 
 
 <h2 id="@barge-parameters">@barge parameters</h2>
 
-<p>Though none of the parameters are <em>technically</em> required we <em>highly</em> explicitly recommend setting the <code class="prettyprint">suite</code> and <code class="prettyprint">framework</code>.</p>
+<p>Though none of the parameters are <em>technically</em> required we <em>highly</em> recommend explicitly setting the <code class="prettyprint">suite</code> and <code class="prettyprint">framework</code>.</p>
 
 <table><thead>
 <tr>
@@ -128,95 +106,10 @@ Don&rsquo;t forget to replace `123456789abcdef` with your API key (available in 
 <td>Command line arguments to pass to the framework.</td>
 </tr>
 </tbody></table>
-<pre><code class="highlight javascript"><span class="c1">// @barge suite="User Signup" framework="casperjs" args="--ssl-protocol=any"</span>
-</code></pre>
-<pre><code class="highlight coffeescript"><span class="c1"># @barge suite="User Signup" framework="casperjs" args="--ssl-protocol=any"
-</span></code></pre>
 
-<h2 id="start-a-suite-test">Start a suite test</h2>
+<p><strong>Example Javascript:</strong> <code class="prettyprint">// @barge suite=&quot;User Signup&quot; framework=&quot;casperjs&quot; args=&quot;--ssl-protocol=any&quot;</code></p>
 
-<p>POST the following parameters to <code class="prettyprint">/api/suites</code></p>
-<pre><code class="highlight shell"><span class="c"># you'll need to change the api_key, project, and name parameters below</span>
-curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> -d <span class="s1">'{"project": "/torvalds/linux","name": "Users"}'</span> https://www.bargeapp.com/api/suites
-</code></pre>
-
-<p>This will return JSON with the following properties:</p>
-
-<table><thead>
-<tr>
-<th>name</th>
-<th>description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>the <code class="prettyprint">id</code> of the suite test created</td>
-</tr>
-<tr>
-<td>baseline</td>
-<td>the suite baseline</td>
-</tr>
-<tr>
-<td>baseline_multiple</td>
-<td>the baseline multiple to use - multiply the baseline by this number to determine the op/s to be tested</td>
-</tr>
-</tbody></table>
-<pre><code class="highlight json"><span class="p">{</span><span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">"baseline_multiple"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">"baseline"</span><span class="p">:</span><span class="mi">100</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<h3 id="retrieving-suite-test">Retrieving suite test</h3>
-
-<p>After starting a suite test you can check on the status of the test by executing a GET against <code class="prettyprint">/api/suites/:id</code></p>
-<pre><code class="highlight shell"><span class="c"># you'll need to change the api key and suite id</span>
-curl -X GET -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/suites/1
-</code></pre>
-
-<p>This will return JSON with the following properties:</p>
-
-<table><thead>
-<tr>
-<th>name</th>
-<th>description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>status</td>
-<td>one of [<code class="prettyprint">pending</code>, <code class="prettyprint">booting</code>, <code class="prettyprint">preparing</code>, <code class="prettyprint">running</code>, <code class="prettyprint">finished</code>]</td>
-</tr>
-<tr>
-<td>tests</td>
-<td>if <code class="prettyprint">status</code> is <code class="prettyprint">finished</code> then this will contain an array of <code class="prettyprint">test</code> objects</td>
-</tr>
-</tbody></table>
-<pre><code class="highlight json"><span class="p">{</span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finished"</span><span class="p">,</span><span class="w"> </span><span class="s2">"tests"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}]}</span><span class="w">
-</span></code></pre>
-
-<h2 id="retrieving-test-results">Retrieving test results</h2>
-
-<p>After a suite test has finished you can retrieve the test results for each test by executing a GET against <code class="prettyprint">/api/tests/:id</code></p>
-<pre><code class="highlight shell"><span class="c"># you'll need to change the api_key and test id</span>
-curl -X GET -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/tests/1
-</code></pre>
-
-<p>This will return JSON with the following properties:</p>
-
-<table><thead>
-<tr>
-<th>name</th>
-<th>description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>status</td>
-<td>status of the test, one of [<code class="prettyprint">pending</code>, <code class="prettyprint">booting</code>, <code class="prettyprint">preparing</code>, <code class="prettyprint">running</code>, <code class="prettyprint">finished</code>]</td>
-</tr>
-<tr>
-<td>resource_events</td>
-<td>an array of resource objects grouped by second and url</td>
-</tr>
-</tbody></table>
-<pre><code class="highlight json"><span class="p">{</span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finished"</span><span class="p">,</span><span class="w"> </span><span class="s2">"resource_events"</span><span class="p">:[{</span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.bargeapp.com"</span><span class="p">,</span><span class="w"> </span><span class="s2">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-11-10T01:22:28.810"</span><span class="p">,</span><span class="w"> </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">"successes"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">}]}</span><span class="w">
-</span></code></pre>
+<p><strong>Example CoffeeScript:</strong> <code class="prettyprint"># @barge suite=&quot;User Signup&quot; framework=&quot;casperjs&quot; args=&quot;--ssl-protocol=any&quot;</code></p>
 
           <h1 id="selenium-tests">Selenium Tests</h1>
 
@@ -228,22 +121,26 @@ curl -X GET -H <span class="s1">'Content-Type: application/json'</span> -H <span
 
 <p>Selenium tests are meant to be run via the API. You can think of the steps involved as similar to the Arrange Act Assert pattern of unit testing:</p>
 
-<p>There are 3 steps to running a Selenium test on Barge:</p>
+<p>There are 4 steps to running a Selenium test on Barge:</p>
 
 <ol>
 <li>Tell Barge to start a Webdriver session (api call)</li>
+<li>Wait for the session to be ready (api call)</li>
 <li>Run your test with the Selenium Remote WebDriver using the server information returned from the previous API call</li>
 <li>Tell Barge to start a test (api call)</li>
 </ol>
 
-<h2 id="starting-a-session">Starting a session</h2>
-<pre><code class="highlight shell"><span class="c"># you'll need to change the api_key below</span>
-curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> https://www.bargeapp.com/api/webdriver_sessions
-</code></pre>
+          <h1 id="api">API</h1>
 
-<p>POST to <code class="prettyprint">/api/webdriver_sessions</code></p>
+<p>Barge provides a RESTful, JSON-based API for running tests and retrieving results.</p>
 
-<p>This will return JSON with the following properties:</p>
+<h2 id="authentication">Authentication</h2>
+
+<p>Just append your API key to an HTTP header named <code class="prettyprint">API_KEY</code> or a query string parameter named <code class="prettyprint">api_key</code>. Note: for the examples we&rsquo;ll be using the HTTP header method for POSTs and the query string parameter for GETs.</p>
+
+          <h1 id="models">Models</h1>
+
+<h2 id="suite-test">Suite Test</h2>
 
 <table><thead>
 <tr>
@@ -253,51 +150,361 @@ curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <spa
 </thead><tbody>
 <tr>
 <td>id</td>
-<td>the id of the session</td>
+<td>id of the suite test</td>
+</tr>
+<tr>
+<td>javascript_project_id</td>
+<td>id of the project</td>
+</tr>
+<tr>
+<td>suite</td>
+<td>name of the suite</td>
+</tr>
+<tr>
+<td>users</td>
+<td>number of users</td>
+</tr>
+<tr>
+<td>minutes</td>
+<td>minutes to run</td>
 </tr>
 <tr>
 <td>status</td>
-<td>the status of the session</td>
-</tr>
-<tr>
-<td>ip</td>
-<td>the ip address of the server</td>
-</tr>
-<tr>
-<td>port</td>
-<td>the port of the server</td>
+<td>{pending, booting, preparing, running, finished}</td>
 </tr>
 <tr>
 <td>created_at</td>
 <td>timestamp</td>
 </tr>
+<tr>
+<td>tests</td>
+<td>array</td>
+</tr>
 </tbody></table>
 
-<h2 id="running-the-test-(locally)">Running the Test (locally)</h2>
-<pre><code class="highlight ruby"><span class="n">driver</span> <span class="o">=</span> <span class="no">Selenium</span><span class="o">::</span><span class="no">WebDriver</span><span class="p">.</span><span class="nf">for</span><span class="p">(</span><span class="ss">:remote</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="s2">"http://</span><span class="si">#{</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">port</span><span class="si">}</span><span class="s2">/"</span><span class="p">)</span>
-</code></pre>
-<pre><code class="highlight javascript"><span class="c1">// using webdriver.io</span>
-<span class="nx">client</span> <span class="o">=</span> <span class="nx">webdriverio</span><span class="p">.</span><span class="nx">remote</span><span class="p">({</span><span class="na">host</span><span class="p">:</span> <span class="nx">ip</span><span class="p">,</span> <span class="na">port</span><span class="p">:</span> <span class="nx">port</span> <span class="p">}.</span><span class="nx">init</span><span class="p">();</span>
-</code></pre>
-<pre><code class="highlight coffeescript"><span class="c1"># using webdriver.io
-</span><span class="nx">client</span> <span class="o">=</span> <span class="nx">webdriverio</span><span class="p">.</span><span class="na">remote</span><span class="p">({</span><span class="na">host</span><span class="o">:</span> <span class="nx">ip</span><span class="p">,</span> <span class="na">port</span><span class="o">:</span> <span class="nx">port</span> <span class="p">}.</span><span class="na">init</span><span class="p">()</span>
-</code></pre>
+<h2 id="post-suite-test">POST Suite Test</h2>
 
-<p>After you&rsquo;ve started a session (above) you&rsquo;ll run your script locally using the Remote Webdriver.</p>
+<blockquote>
+<p>you&rsquo;ll need to change the api_key, project id, and suite parameters below</p>
+</blockquote>
+<pre><code class="highlight http"><span class="nf">POST</span> <span class="nn">/api/suite_tests</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="s">Host bargeapp.com</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
-<h2 id="running-the-barge-test">Running the Barge test</h2>
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"javascript_project_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"suite"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signup"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
-<p>After the local script has finished running you&rsquo;re ready to run a Barge test.</p>
-<pre><code class="highlight shell"><span class="c"># you'll need to change the api_key below</span>
-curl -X POST -H <span class="s1">'Content-Type: application/json'</span> -H <span class="s2">"API_KEY: 123456789abcdef"</span> -d <span class="s1">'{"webdriver_session_id": 101, "users": 100, "minutes": 10}'</span> https://www.bargeapp.com/api/tests/create_webdriver
-</code></pre>
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"javascript_project_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"suite"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signup"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"tests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"resource_summaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="s2">"assertion_summaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="s2">"script"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/test-signup.js"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>POST to <code class="prettyprint">/api/suite_tests</code> to start a suite test (a test that runs all scripts in a suite)</p>
+
+<h2 id="get-suite-test">GET Suite Test</h2>
+
+<blockquote>
+<p>you&rsquo;ll need to change the api_key below</p>
+</blockquote>
+<pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/suite_tests/1</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="s">Host bargeapp.com</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"javascript_project_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"suite"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signup"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"tests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finished"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finished"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"resource_summaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.google.com"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"successes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"assertion_summaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Search button appears"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"successes"</span><span class="p">:</span><span class="w"> </span><span class="mi">9000</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"script"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/test-signup.js"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>GET <code class="prettyprint">/api/suite_tests/:id</code> to get details on a suite test</p>
+
+<h2 id="test">Test</h2>
+
+<p>There are two types of tests: Javascript and Selenium. Currently running Javascript tests via the API is only suppored using the Suite Test endpoints.</p>
+
+<table><thead>
+<tr>
+<th>name</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>id of the test</td>
+</tr>
+<tr>
+<td>type</td>
+<td>{JavascriptTest, WebdriverTest}</td>
+</tr>
+<tr>
+<td>status</td>
+<td>status of the test</td>
+</tr>
+<tr>
+<td>users</td>
+<td>number of users</td>
+</tr>
+<tr>
+<td>minutes</td>
+<td>minutes to run</td>
+</tr>
+<tr>
+<td>status</td>
+<td>{pending, booting, preparing, running, finished}</td>
+</tr>
+<tr>
+<td>suite_test_id</td>
+<td>id of the suite test</td>
+</tr>
+<tr>
+<td>suite_test</td>
+<td>suite test object</td>
+</tr>
+<tr>
+<td>script</td>
+<td>script object</td>
+</tr>
+<tr>
+<td>resource_summaries</td>
+<td>array</td>
+</tr>
+<tr>
+<td>assertion_summaries</td>
+<td>array</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td></td>
+</tr>
+<tr>
+<td>tests</td>
+<td>array</td>
+</tr>
+</tbody></table>
+
+<h2 id="post-test">POST Test</h2>
+
+<blockquote>
+<p>you&rsquo;ll need to change the api_key, users, minutes and webdriver_session_id below</p>
+</blockquote>
+<pre><code class="highlight http"><span class="nf">POST</span> <span class="nn">/api/tests/create_webdriver</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="s">Host bargeapp.com</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"webdriver_session_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"resource_summaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>POST to <code class="prettyprint">/api/tests/create_webdriver</code> to create a Webdriver test</p>
+
+<h2 id="get-test">GET Test</h2>
+
+<blockquote>
+<p>you&rsquo;ll need to change the api_key below</p>
+</blockquote>
+<pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/tests/1</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="s">Host bargeapp.com</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">Success</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finished"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"suite"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signup"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JavascriptTest"</span><span class="w">
+  </span><span class="s2">"suite_test_id"</span><span class="err">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"suite_test"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"suite"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signup"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"resource_summaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.google.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"successes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"assertion_summaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Search button appears"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"successes"</span><span class="p">:</span><span class="w"> </span><span class="mi">9000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"script"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/test-signup.js"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>GET <code class="prettyprint">/api/tests/:id</code> to get details on a test</p>
+
+<h2 id="webdriver-session">Webdriver Session</h2>
+
+<p>A Webdriver Session represents a remote server listening for webdriver commands. Running a Selenium test on Barge requires creating a Webdriver Session, waiting for it to be ready, running the script with the Selenium Remote Webdriver configured to use the session&rsquo;s ip and port, then creating a test.</p>
+
+<table><thead>
+<tr>
+<th>name</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>id of the session</td>
+</tr>
+<tr>
+<td>status</td>
+<td>status of the session</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>ip of the remote server</td>
+</tr>
+<tr>
+<td>port</td>
+<td>port of the remote server</td>
+</tr>
+</tbody></table>
+
+<h2 id="post-webdriver-session">POST Webdriver Session</h2>
+
+<blockquote>
+<p>you&rsquo;ll need to change the api_key below</p>
+</blockquote>
+<pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/webdriver_sessions</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="s">Host bargeapp.com</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>POST to <code class="prettyprint">/api/webdriver_sessions</code></p>
+
+<h2 id="get-webdriver-session">GET Webdriver Session</h2>
+
+<blockquote>
+<p>you&rsquo;ll need to change the api_key below</p>
+</blockquote>
+<pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/webdriver_sessions/1</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="s">Host bargeapp.com</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">Success</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+
+<span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"running"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8001"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="javascript">javascript</a>
-                <a href="#" data-language-name="coffeescript">coffeescript</a>
-                <a href="#" data-language-name="ruby">ruby</a>
+                <a href="#" data-language-name="http">http</a>
           </div>
       </div>
     </div>
