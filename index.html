@@ -136,7 +136,7 @@
 
 <h2 id="authentication">Authentication</h2>
 
-<p>Just append your API key to an HTTP header named <code class="prettyprint">API_KEY</code> or a query string parameter named <code class="prettyprint">api_key</code>. Note: for the examples we&rsquo;ll be using the HTTP header method for POSTs and the query string parameter for GETs.</p>
+<p>Just append your API key to an HTTP header named <code class="prettyprint">API-KEY</code> or a query string parameter named <code class="prettyprint">api_key</code>. Note: for the examples we&rsquo;ll be using the HTTP header method for POSTs and the query string parameter for GETs.</p>
 
           <h1 id="models">Models</h1>
 
@@ -185,14 +185,14 @@
 <h2 id="post-suite-test">POST Suite Test</h2>
 
 <blockquote>
-<p>you&rsquo;ll need to change the api_key, project id, and suite parameters below</p>
+<p>you&rsquo;ll need to change the API-KEY, project id, and suite parameters below</p>
 </blockquote>
 <pre><code class="highlight http"><span class="nf">POST</span> <span class="nn">/api/suite_tests</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="s">Host bargeapp.com</span>
 <span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
 <span class="p">{</span><span class="w">
-  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"API-KEY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"javascript_project_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="s2">"suite"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signup"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
@@ -229,14 +229,14 @@
 <h2 id="get-suite-test">GET Suite Test</h2>
 
 <blockquote>
-<p>you&rsquo;ll need to change the api_key below</p>
+<p>you&rsquo;ll need to change the API-KEY below</p>
 </blockquote>
 <pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/suite_tests/1</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="s">Host bargeapp.com</span>
 <span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
 <span class="p">{</span><span class="w">
-  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+  </span><span class="s2">"API-KEY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
@@ -345,14 +345,14 @@
 <h2 id="post-test">POST Test</h2>
 
 <blockquote>
-<p>you&rsquo;ll need to change the api_key, users, minutes and webdriver_session_id below</p>
+<p>you&rsquo;ll need to change the API-KEY, users, minutes and webdriver_session_id below</p>
 </blockquote>
 <pre><code class="highlight http"><span class="nf">POST</span> <span class="nn">/api/tests/create_webdriver</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="s">Host bargeapp.com</span>
 <span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
 <span class="p">{</span><span class="w">
-  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"API-KEY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
   </span><span class="s2">"minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
   </span><span class="s2">"webdriver_session_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
@@ -375,14 +375,14 @@
 <h2 id="get-test">GET Test</h2>
 
 <blockquote>
-<p>you&rsquo;ll need to change the api_key below</p>
+<p>you&rsquo;ll need to change the API-KEY below</p>
 </blockquote>
 <pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/tests/1</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="s">Host bargeapp.com</span>
 <span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
 <span class="p">{</span><span class="w">
-  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+  </span><span class="s2">"API-KEY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">Success</span>
@@ -454,14 +454,14 @@
 <h2 id="post-webdriver-session">POST Webdriver Session</h2>
 
 <blockquote>
-<p>you&rsquo;ll need to change the api_key below</p>
+<p>you&rsquo;ll need to change the API-KEY below</p>
 </blockquote>
 <pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/webdriver_sessions</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="s">Host bargeapp.com</span>
 <span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
 <span class="p">{</span><span class="w">
-  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+  </span><span class="s2">"API-KEY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
@@ -480,14 +480,14 @@
 <h2 id="get-webdriver-session">GET Webdriver Session</h2>
 
 <blockquote>
-<p>you&rsquo;ll need to change the api_key below</p>
+<p>you&rsquo;ll need to change the API-KEY below</p>
 </blockquote>
 <pre><code class="highlight http"><span class="nf">GET</span> <span class="nn">/api/webdriver_sessions/1</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="s">Host bargeapp.com</span>
 <span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
 
 <span class="p">{</span><span class="w">
-  </span><span class="s2">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"API_KEY"</span><span class="w">
+  </span><span class="s2">"API-KEY"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <pre><code class="highlight http"><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">Success</span>
