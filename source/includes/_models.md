@@ -15,7 +15,7 @@ tests | array
 
 ## POST Suite Test
 
-> you'll need to change the api_key, project id, and suite parameters below
+> you'll need to change the API-KEY, project id, and suite parameters below
 
 ```http
 POST /api/suite_tests HTTP/1.1
@@ -23,7 +23,7 @@ Host bargeapp.com
 Content-Type: application/json
 
 {
-  "api_key": "API_KEY",
+  "API-KEY": "abc123",
   "javascript_project_id": 1,
   "suite": "Signup",
   "users": 100,
@@ -62,7 +62,7 @@ POST to `/api/suite_tests` to start a suite test (a test that runs all scripts i
 
 ## GET Suite Test
 
-> you'll need to change the api_key below
+> you'll need to change the API-KEY below
 
 ```http
 GET /api/suite_tests/1 HTTP/1.1
@@ -70,7 +70,7 @@ Host bargeapp.com
 Content-Type: application/json
 
 {
-  "api_key": "API_KEY"
+  "API-KEY": "abc123"
 }
 ```
 
@@ -135,7 +135,7 @@ created_at |
 tests | array
 
 ## POST Test
-> you'll need to change the api_key, users, minutes and webdriver_session_id below
+> you'll need to change the API-KEY, users, minutes and webdriver_session_id below
 
 ```http
 POST /api/tests/create_webdriver HTTP/1.1
@@ -143,7 +143,7 @@ Host bargeapp.com
 Content-Type: application/json
 
 {
-  "api_key": "API_KEY",
+  "API-KEY": "abc123",
   "users": 100,
   "minutes": 10,
   "webdriver_session_id": 1
@@ -167,7 +167,7 @@ POST to `/api/tests/create_webdriver` to create a Webdriver test
 
 ## GET Test
 
-> you'll need to change the api_key below
+> you'll need to change the API-KEY below
 
 ```http
 GET /api/tests/1 HTTP/1.1
@@ -175,7 +175,7 @@ Host bargeapp.com
 Content-Type: application/json
 
 {
-  "api_key": "API_KEY"
+  "API-KEY": "abc123"
 }
 ```
 
@@ -230,7 +230,7 @@ ip | ip of the remote server
 port | port of the remote server
 
 ## POST Webdriver Session
-> you'll need to change the api_key below
+> you'll need to change the API-KEY below
 
 ```http
 GET /api/webdriver_sessions HTTP/1.1
@@ -238,7 +238,7 @@ Host bargeapp.com
 Content-Type: application/json
 
 {
-  "api_key": "API_KEY"
+  "API-KEY": "abc123"
 }
 ```
 ```http
@@ -257,7 +257,7 @@ POST to `/api/webdriver_sessions`
 
 ## GET Webdriver Session
 
-> you'll need to change the api_key below
+> you'll need to change the API-KEY below
 
 ```http
 GET /api/webdriver_sessions/1 HTTP/1.1
@@ -265,7 +265,7 @@ Host bargeapp.com
 Content-Type: application/json
 
 {
-  "api_key": "API_KEY"
+  "API-KEY": "abc123"
 }
 ```
 ```http
